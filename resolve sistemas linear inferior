@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define TAM 100
+
+void ler_dim_mat(int *coluna, int *linha) {
+	printf(" Informe a quantidade de linhas da matriz. \n");
+	scanf("%d",&*linha);
+	printf(" Informe a quantidade de colunas da matriz. \n");
+	scanf("%d",&*coluna);	
+}
+
+void ler_dimensao_vet(int *elemento) {
+    printf("Informe as dimensoes do vetor, numero de elementos.\n");
+    scanf("%d", &*elemento);
+}
+
+void ler_matriz(int mat[TAM][TAM], int linhas, int colunas) {
+    int i,j;
+    printf("Infome os elementos da matriz.\n");
+    for(i = 0; i < linhas; i++) {
+        for(j = 0; j < colunas; j++) {
+            if(j <= i) {
+                printf(" digite o elemento [%d , %d]: ", i+1, j+1);
+                scanf("%d", &mat[i][j]);
+                fflush(stdin);
+            }
+        }
+    }
+}
+
+void impreme(int matriz[TAM][TAM], int ln, int cl) {
+	int i, j;
+	printf("Os elementos da matriz  sao.\n");
+    for(i = 0; i < ln; i++) {
+        for(j = 0; j < cl; j++) {
+            printf(" %d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void ler_vetor(int vet[TAM], int elemento) {
+    int j;
+    printf("Infome os elementos do vetor.\n");
+    for(j = 0; j < elemento; j++) {
+        printf("Infome o elemento %d.\n", j+1);
+            scanf("%d", &vet[j]);
+        }
+}
+
+void sistema_solucao(int matriz[TAM][TAM], int vetor_indepedente[TAM], int linha, int coluna, int vetor_solucao[TAM]) {
+    int i, j, k = 0, somatorio = 0;
+    
+    vetor_solucao[0] = vetor_indepedente[0]/matriz[0][0];
+
+    for(int i = 1; i < linha; i++)
+    {
+        somatorio = 0;
+        for(int j = 0; j < i; j++)
+        {
+            somatorio += matriz[i][j] * vetor_solucao[j];
+        }
+        vetor_solucao[i] = (vetor_indepedente[i] - somatorio)/matriz[i][i];
+        k++;
+    }
+}
+
+void imprime_solucao(int vetor_solucao[TAM], int elementos) {
+    int i;
+    
+    printf("A solucao do sistema X =");
+    printf(" [ ");
+    for(i = 0; i < elementos; i++) {
+        printf(" %d  ", vetor_solucao[i]);
+    }
+    printf(" ] ");
+}
+
+int main()
+{
+    int matriz[TAM][TAM], vetor_indepedente[TAM], vetor_solucao[TAM];
+    int linha, coluna, elementos;
+    
+    ler_dim_mat(&coluna,&linha);
+    ler_dimensao_vet(&elementos);
+    ler_matriz(matriz, linha, coluna);
+    ler_vetor(vetor_indepedente, elementos);
+    impreme(matriz, linha, coluna);
+    sistema_solucao(matriz, vetor_indepedente, linha, coluna, vetor_solucao);
+    imprime_solucao(vetor_solucao, elementos);
+    
+    return 0;
+}
